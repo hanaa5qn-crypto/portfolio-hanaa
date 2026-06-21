@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Khansumber Altankhuyag — Portfolio
 
-## Getting Started
+Personal portfolio site for Khansumber Altankhuyag — full-stack developer & founder
+based in San Francisco.
 
-First, run the development server:
+**Live:** https://khansumber-portfolio.vercel.app
+
+## Highlights
+
+- **Gridwave (gridwave.me)** — a German language-learning platform built solo, end-to-end
+- **Automated Futures Trading Bot** — Python algo bot (ICT microstructure, volume profile,
+  Bookmap order flow, risk engine)
+- **Buudii** — e-commerce clothing brand (founder)
+- **Logistics & Limo platform** — freelance React/Node build
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org) (App Router, TypeScript)
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [Framer Motion](https://www.framer.com/motion/) for scroll-reveal & micro-interactions
+- Deployed on [Vercel](https://vercel.com)
+
+Design direction: bold gradient-modern — animated aurora mesh background, glassmorphic
+cards, one signature violet → cyan → magenta gradient throughout.
+
+## Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+  app/            # routes, metadata, OG image, robots, sitemap
+  components/     # Hero, Gridwave, TradingBot, MoreWork, About, Skills, Contact, ...
+public/           # résumé PDF + static assets
+.resume-src/      # HTML source for the downloadable résumé (re-render via Chrome headless)
+```

@@ -15,6 +15,13 @@ type CounterProps = {
   suffix?: string;
 };
 
+function format(v: number, decimals: number) {
+  const f = v.toFixed(decimals);
+  const [int, dec] = f.split(".");
+  const grouped = int.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return dec ? `${grouped}.${dec}` : grouped;
+}
+
 export default function Counter({
   to,
   decimals = 0,
@@ -29,16 +36,15 @@ export default function Counter({
   const [display, setDisplay] = useState("0");
 
   useEffect(() => {
-    if (inView) mv.set(to);
-  }, [inView, to, mv]);
+    if (!inView) return;
+    if (reduce) spring.jump(to);
+    else mv.set(to);
+  }, [inView, reduce, to, mv, spring]);
 
-  useEffect(() => {
-    if (reduce) {
-      setDisplay(to.toFixed(decimals));
-      return;
-    }
-    return spring.on("change", (v) => setDisplay(v.toFixed(decimals)));
-  }, [spring, decimals, reduce, to]);
+  useEffect(
+    () => spring.on("change", (v) => setDisplay(format(v, decimals))),
+    [spring, decimals],
+  );
 
   return (
     <span ref={ref}>

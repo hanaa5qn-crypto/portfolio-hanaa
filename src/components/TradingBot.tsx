@@ -7,17 +7,29 @@ import Counter from "./Counter";
 const features = [
   "Liquidity sweeps",
   "Fair value gaps",
-  "Premium / discount arrays",
+  "Low-volume nodes",
+  "Order flow filter",
   "Volume profile",
-  "Bookmap / order flow",
   "ICT market structure",
 ];
 
+// Real backtest results — pulled from ict-backtest.vercel.app (NQ, base config)
 const stats = [
-  { value: 50, suffix: "%", label: "Target win rate" },
-  { value: 10, prefix: "1:<", label: "Reward-to-risk" },
-  { value: 4, label: "Futures markets" },
+  { value: 41.3, decimals: 1, suffix: "%", label: "Win rate · NQ 1m" },
+  { value: 1.6, decimals: 1, label: "Profit factor" },
+  { value: 2.7, decimals: 1, suffix: "%", label: "Max drawdown" },
 ];
+
+const results = [
+  { m: "NQ · 1m", t: "12,712", wr: "41.3%", pf: "1.6", ret: "+809%", dd: "−2.7%" },
+  { m: "NQ · 5m", t: "3,869", wr: "38.1%", pf: "1.76", ret: "+525%", dd: "−6.0%" },
+  { m: "NQ · 15m", t: "1,497", wr: "34.3%", pf: "1.87", ret: "+351%", dd: "−4.9%" },
+];
+
+// Real equity curve: $100K → $908K over 12,712 NQ 1m trades
+const EQUITY_LINE =
+  "M0.0,130.0 L7.2,128.0 L16.7,123.6 L26.3,119.7 L38.2,117.6 L50.1,114.9 L62.1,112.2 L74.0,108.3 L86.0,104.8 L97.9,100.5 L109.9,96.9 L121.8,92.6 L133.7,91.0 L145.7,84.3 L157.6,80.0 L169.6,76.8 L181.5,74.4 L193.4,69.5 L205.4,64.4 L217.3,58.6 L229.3,45.8 L241.2,35.3 L253.1,30.4 L265.1,28.4 L277.0,23.7 L289.0,22.8 L300.9,16.0 L312.8,14.4 L320.0,12.0";
+const EQUITY_AREA = `${EQUITY_LINE} L320,140 L0,140 Z`;
 
 export default function TradingBot() {
   return (
@@ -30,18 +42,23 @@ export default function TradingBot() {
             </div>
 
             <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
-              {/* chart viz */}
+              {/* chart viz — real equity curve */}
               <div className="order-2 lg:order-1">
                 <div className="glass relative overflow-hidden rounded-2xl p-5">
-                  <div className="mb-4 flex items-center justify-between">
+                  <div className="mb-1 flex items-center justify-between">
                     <span className="font-mono text-xs text-muted">
                       EQUITY CURVE
                     </span>
-                    <span className="font-mono text-xs text-cyan">▲ live</span>
+                    <span className="font-mono text-xs text-cyan">
+                      $100K → $908K
+                    </span>
+                  </div>
+                  <div className="mb-3 font-mono text-[0.65rem] text-muted">
+                    +809% · 12,712 trades · 3-yr NQ backtest
                   </div>
                   <svg
                     viewBox="0 0 320 140"
-                    className="h-36 w-full"
+                    className="h-32 w-full"
                     preserveAspectRatio="none"
                   >
                     <defs>
@@ -56,7 +73,7 @@ export default function TradingBot() {
                       </linearGradient>
                     </defs>
                     <motion.path
-                      d="M0,120 L40,108 L80,112 L120,86 L160,92 L200,60 L240,66 L280,34 L320,20"
+                      d={EQUITY_LINE}
                       fill="none"
                       stroke="url(#eq)"
                       strokeWidth="2.5"
@@ -68,7 +85,7 @@ export default function TradingBot() {
                       transition={{ duration: 1.6, ease: "easeInOut" }}
                     />
                     <motion.path
-                      d="M0,120 L40,108 L80,112 L120,86 L160,92 L200,60 L240,66 L280,34 L320,20 L320,140 L0,140 Z"
+                      d={EQUITY_AREA}
                       fill="url(#eqf)"
                       initial={{ opacity: 0 }}
                       whileInView={{ opacity: 1 }}
@@ -76,11 +93,30 @@ export default function TradingBot() {
                       transition={{ duration: 1, delay: 1 }}
                     />
                   </svg>
-                  <div className="mt-3 grid grid-cols-3 gap-2 font-mono text-[0.65rem] text-muted">
-                    <span>drawdown ctrl</span>
-                    <span className="text-center">trailing stop</span>
-                    <span className="text-right">prop-firm rules</span>
-                  </div>
+
+                  {/* breadth across timeframes */}
+                  <table className="mt-4 w-full border-collapse font-mono text-[0.62rem] sm:text-[0.68rem]">
+                    <thead>
+                      <tr className="text-muted">
+                        <th className="py-1 text-left font-normal">Market</th>
+                        <th className="py-1 text-right font-normal">Trades</th>
+                        <th className="py-1 text-right font-normal">PF</th>
+                        <th className="py-1 text-right font-normal">Return</th>
+                        <th className="py-1 text-right font-normal">Max DD</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {results.map((r) => (
+                        <tr key={r.m} className="border-t border-line">
+                          <td className="py-1.5 text-left text-fg/80">{r.m}</td>
+                          <td className="py-1.5 text-right text-fg/70">{r.t}</td>
+                          <td className="py-1.5 text-right text-fg/70">{r.pf}</td>
+                          <td className="py-1.5 text-right text-cyan">{r.ret}</td>
+                          <td className="py-1.5 text-right text-fg/70">{r.dd}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
@@ -96,12 +132,18 @@ export default function TradingBot() {
                   <span className="text-grad">Futures Trading Bot</span>
                 </h3>
                 <p className="mt-4 text-pretty leading-relaxed text-muted">
-                  A Python engine that ingests real-time NQ, ES, MNQ &amp; YM
-                  futures data and executes on algorithmic signals. It detects
-                  ICT market microstructure and ships a real risk layer — dynamic
-                  equity-curve tracking and trailing drawdown controls. When the
-                  market is ambiguous, it flags for manual review instead of
-                  trading blind.
+                  A Python engine that detects ICT market microstructure on NQ
+                  futures and executes on algorithmic signals, with a real risk
+                  layer — dynamic equity tracking and trailing drawdown control.
+                  I backtested it over{" "}
+                  <span className="font-semibold text-fg">
+                    3 years of NQ data
+                  </span>{" "}
+                  across three timeframes and multiple signal filters —{" "}
+                  <span className="font-semibold text-fg">
+                    18,000+ trades
+                  </span>{" "}
+                  — and shipped the analytics dashboard to read every result.
                 </p>
 
                 <div className="mt-7 grid grid-cols-3 gap-3">
@@ -113,7 +155,7 @@ export default function TradingBot() {
                       <div className="text-grad text-2xl font-bold sm:text-3xl">
                         <Counter
                           to={s.value}
-                          prefix={s.prefix}
+                          decimals={s.decimals}
                           suffix={s.suffix}
                         />
                       </div>
@@ -135,11 +177,20 @@ export default function TradingBot() {
                   ))}
                 </div>
 
-                <div className="mt-6 flex flex-wrap gap-2 font-mono text-[0.7rem] text-muted">
-                  <span className="rounded bg-white/5 px-2 py-1">Python</span>
-                  <span className="rounded bg-white/5 px-2 py-1">Pandas</span>
-                  <span className="rounded bg-white/5 px-2 py-1">NumPy</span>
-                  <span className="rounded bg-white/5 px-2 py-1">REST APIs</span>
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <a
+                    href="https://ict-backtest.vercel.app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-grad text-sm"
+                  >
+                    View backtest ↗
+                  </a>
+                  <span className="flex flex-wrap gap-2 font-mono text-[0.7rem] text-muted">
+                    <span className="rounded bg-white/5 px-2 py-1">Python</span>
+                    <span className="rounded bg-white/5 px-2 py-1">Pandas</span>
+                    <span className="rounded bg-white/5 px-2 py-1">NumPy</span>
+                  </span>
                 </div>
               </div>
             </div>

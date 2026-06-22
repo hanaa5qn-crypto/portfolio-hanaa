@@ -2,14 +2,32 @@
 
 import Reveal from "./Reveal";
 
-const projects = [
+type Project = {
+  n: string;
+  title: string;
+  role: string;
+  period: string;
+  desc: string;
+  tags: string[];
+  flow?: string[];
+  accent: string;
+};
+
+const projects: Project[] = [
   {
     n: "03",
     title: "Logistics & Limo Platform",
     role: "Freelance Web Developer",
     period: "2026 — Present",
-    desc: "A responsive booking platform for a regional logistics & transport company. Built booking-request interfaces that streamlined inbound lead capture for the ops team, deployed on Render with mobile/desktop performance tuning.",
-    tags: ["React", "Node.js", "Python", "HTML5"],
+    desc: "A real-time dispatch platform for a regional logistics & limo company. A customer's booking lands on the dispatcher board the moment it's made; dispatch assigns a driver, who's notified by SMS and confirms or declines by text — a declined job is automatically re-queued back to the board. The hard part wasn't the UI: it was the event-driven backend — the booking → dispatch → driver state machine and the two-way SMS round-trip that keeps every job accounted for.",
+    tags: ["React", "Node.js", "Python", "Two-way SMS", "Webhooks", "Real-time"],
+    flow: [
+      "Customer books",
+      "Hits dispatcher",
+      "Driver SMS",
+      "Yes / No reply",
+      "No → re-queued",
+    ],
     accent: "from-cyan/20 to-violet/10",
   },
   {
@@ -49,6 +67,22 @@ export default function MoreWork() {
                 <p className="mt-4 text-sm leading-relaxed text-muted">
                   {p.desc}
                 </p>
+                {p.flow && (
+                  <div className="mt-5 flex flex-wrap items-center gap-x-1.5 gap-y-2">
+                    {p.flow.map((step, j) => (
+                      <span key={step} className="flex items-center gap-1.5">
+                        <span className="rounded-md border border-line bg-white/[0.03] px-2 py-1 font-mono text-[0.65rem] text-fg/80">
+                          {step}
+                        </span>
+                        {j < p.flow!.length - 1 && (
+                          <span aria-hidden className="text-cyan/60">
+                            →
+                          </span>
+                        )}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <div className="mt-6 flex flex-wrap gap-2">
                   {p.tags.map((t) => (
                     <span

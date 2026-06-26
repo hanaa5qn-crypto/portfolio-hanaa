@@ -96,7 +96,7 @@ export default function Hero() {
             <img
               alt="Portrait of Khansumber"
               className="w-full h-full object-cover select-none"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVk8T7RDLP_FWa9hwjZ2WKi20Az_jvyOi9Dwf2mQgnL8uieufTfcWkgUshYueKnc8Olk_R7DnTD5whVWhGtbQKK1g04nLNatz8pPd6JQgs9-6x111fEAv7CbWMp-ZZidiw094h38D1EN5cd4a3Z7-R5SQD82KypVa_iQKG2n8Z8cCtMJOKIEtpYBQyTKBigqQWbWC5cxkqF453rUn8P9LBDDx21Libstmm4ZeTzGRA4yYio1wKgSysrnxRl4hoVXTCSAP8pya0PFTX"
+              src="/model_portrait.jpg"
             />
           </motion.div>
         </div>

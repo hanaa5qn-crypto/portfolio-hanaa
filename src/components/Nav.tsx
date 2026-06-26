@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const links = [
-  { href: "#work", label: "Work" },
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#contact", label: "Contact" },
+  { href: "#work", label: "WORK" },
+  { href: "#about", label: "ABOUT" },
+  { href: "#skills", label: "SKILLS" },
+  { href: "#contact", label: "CONTACT" },
 ];
 
 export default function Nav() {
@@ -29,16 +29,13 @@ export default function Nav() {
       className="fixed top-0 inset-x-0 z-50 section-pad"
     >
       <nav
-        className={`mx-auto mt-3 flex max-w-6xl items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 ${
+        className={`mx-auto mt-3 flex max-w-6xl items-center justify-between rounded-full px-5 py-3.5 transition-all duration-500 ${
           scrolled ? "glass shadow-lg" : "border border-transparent"
         }`}
       >
         <a href="#top" className="group flex items-center gap-2 pl-1">
-          <span className="grid h-8 w-8 place-items-center rounded-lg btn-grad !p-0 text-sm font-bold">
-            K
-          </span>
-          <span className="font-mono text-sm tracking-tight text-fg/90">
-            khansumber<span className="text-muted">.dev</span>
+          <span className="font-sans text-base font-bold tracking-tighter text-fg uppercase">
+            KHANSUMBER
           </span>
         </a>
 
@@ -47,7 +44,7 @@ export default function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="rounded-full px-3.5 py-1.5 text-sm text-muted transition-colors hover:text-fg"
+              className="rounded-full px-4 py-1.5 text-[11px] font-semibold tracking-widest text-muted transition-colors hover:text-fg uppercase"
             >
               {l.label}
             </a>
@@ -55,7 +52,7 @@ export default function Nav() {
         </div>
 
         <div className="hidden md:block">
-          <a href="#contact" className="btn-grad text-sm">
+          <a href="#contact" className="btn-grad text-xs font-semibold uppercase tracking-wider !py-2.5">
             Hire me
           </a>
         </div>
@@ -99,7 +96,7 @@ export default function Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-4 py-3 text-sm text-muted transition-colors hover:bg-white/5 hover:text-fg"
+                className="rounded-lg px-4 py-3 text-xs font-semibold tracking-widest text-muted transition-colors hover:bg-white/5 hover:text-fg uppercase"
               >
                 {l.label}
               </a>
@@ -107,7 +104,7 @@ export default function Nav() {
             <a
               href="#contact"
               onClick={() => setOpen(false)}
-              className="btn-grad mt-1 text-center text-sm"
+              className="btn-grad mt-1 text-center text-xs font-semibold uppercase tracking-wider"
             >
               Hire me
             </a>

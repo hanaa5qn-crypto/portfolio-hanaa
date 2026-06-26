@@ -1,6 +1,7 @@
 import Background from "@/components/Background";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import Marquee from "@/components/Marquee";
 import Gridwave from "@/components/Gridwave";
 import TradingBot from "@/components/TradingBot";
 import MoreWork from "@/components/MoreWork";
@@ -50,6 +51,7 @@ export default function Home() {
       <Nav />
       <main className="flex-1">
         <Hero />
+        <Marquee />
         <Gridwave />
         <TradingBot />
         <MoreWork />
